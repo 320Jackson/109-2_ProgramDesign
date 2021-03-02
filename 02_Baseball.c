@@ -5,9 +5,8 @@ int main(){
     int OCount = 0;
     for(int Run = 0; Run < 5; Run++){
         char Player;
-        scanf("%c", &Player);
-        fflush(stdin);
-        
+        scanf(" %c", &Player);
+
         if(Player == 'O'){
             OCount += 1;
             if(OCount == 3){
