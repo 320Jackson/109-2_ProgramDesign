@@ -38,20 +38,14 @@ int Found_Best(Tariff Input){
         Buffer[Run] += Input.House * House[Run];
         Buffer[Run] += Input.InsideSMS * InsideSMS[Run];
         Buffer[Run] += Input.OutsideSMS * OutsideSMS[Run];
-        Buffer[Run] -= Name[Run];
-        if(Buffer[Run] < Name[Run]){
-            Buffer[Run] = Name[Run];
-        }
     }
-
-    int Output = Name[0];
-    for(int Run = 0; Run < 2; Run++){
-        if(Buffer[Run] >= Name[Run + 1]){
-            Output = Name[Run + 1];
-        }
-        else{
-            break;
-        }
+    if(Buffer[0] < Name[1]){
+        return Name[0];
     }
-    return Output;
+    else if(Buffer[1] < Name[2]){
+        return Name[1];
+    }
+    else{
+        return Name[2];
+    }
 }
