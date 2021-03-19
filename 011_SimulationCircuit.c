@@ -1,5 +1,4 @@
 #include<stdio.h>
-#include<math.h>
 #include<stdlib.h>
 
 char *getGiveBackCode(char *);
@@ -48,12 +47,17 @@ char *getGiveBackCode(char *m){
     }
     //printf("%d\n", Num);
     /*取得電路次數，編碼*/
-    int Buffer = Circuit(Num);
-    char *Output = malloc(sizeof(char) * 5);
-    for(int Run = 4 - 1; Run >= 0; Run--){
+    int Buffer = 0;
+    for(int Run = 1; Run <= Num; Run++){
+        Buffer += Circuit(Run);
+    }
+    //printf("%d\n", Buffer);
+
+    char *Output = malloc(sizeof(char) * 12);
+    for(int Run = 11 - 1; Run >= 0; Run--){
         Output[Run] = (Buffer % 2) + 48;
         Buffer /= 2;
     }
-    Output[4] = '\0';
+    Output[11] = '\0';
     return Output;
 }
