@@ -1,0 +1,1 @@
+char *InputStr(int *);
