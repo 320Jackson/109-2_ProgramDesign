@@ -4,3 +4,4 @@ struct String{
     int Length;
 };
 char *InputStr(int *);
+char **SplitStr(char *);
