@@ -1,65 +1,70 @@
 #include <stdlib.h>
+#include <math.h>
 #include "015_BigNum_Library.h"
 
-char *BigNum_Addition(BigNum Summand, BigNum Addend){
-    /*Decide result size*/
-    int ResultSize, Carry = 0;
-    if(Addend.Length > Summand.Length){
-        ResultSize = Addend.Length;
+BigNum BigNum_Subtraction(BigNum Minute, BigNum Minus, int Mode){
+    /*Deside result size*/
+    int RunResult, ResultSize, Carry = 0;
+    switch(Mode){
+        case 1:
+            ResultSize = 0;
+            break;
+        case 2:
+            ResultSize = -1;
+            break;
+    }
+    if(Minute.Length > Minus.Length){
+        ResultSize += Minute.Length;
     }
     else{
-        ResultSize = Summand.Length;
+        ResultSize += Minus.Length;
     }
+    RunResult = ResultSize;
 
     /*Initialization*/
-    char *Result = malloc(sizeof(char) * (ResultSize + 1));
-    Result[ResultSize] = '\0';
-    ResultSize -= 1;
-    
+    BigNum Output;
+    Output.Content = malloc(sizeof(char) * (ResultSize + 1));
+    Output.Length = ResultSize + 1;
+    Output.Content[RunResult] = '\0';
+    RunResult--;
+
     /*Calculation*/
-    int Run_Summand = Summand.Length - 2;
-    int Run_Addend = Addend.Length - 2;
-    while(ResultSize >= 0){
+    int Run_Minute = Minute.Length - 2;
+    int Run_Minus = Minus.Length - 2;
+    while(RunResult >= 0){
         int Buffer;
-        if(Run_Summand < 0 && Run_Addend >= 0){
-            Buffer = (Addend.Content[Run_Addend] - 48) + Carry;
+        if(Run_Minute < 0 && Run_Minus >= 0){
+            Buffer = (Minus.Content[Run_Minus] - 48) + Carry;
         }
-        else if(Run_Addend < 0 && Run_Summand >= 0){
-            Buffer = (Summand.Content[Run_Summand] - 48) + Carry;
+        else if(Run_Minus < 0 && Run_Minute >= 0){
+            Buffer = (Minute.Content[Run_Minute] - 48) + Carry;
         }
-        else if(Run_Addend >= 0 && Run_Summand >= 0){
-            Buffer = (Summand.Content[Run_Summand] - 48) + (Addend.Content[Run_Addend] - 48) + Carry;
+        else if(Run_Minus >= 0 && Run_Minute >= 0){
+            Buffer = (Minute.Content[Run_Minute] - 48) + (Minus.Content[Run_Minus] - 48) + Carry;
         }
         else{
             if(Carry != 0){
-                Result[ResultSize] = Carry + 48;
+                Output.Content[RunResult] = Carry + 48;
             }
             break;
         }
-        Result[ResultSize] = (Buffer % 10) + 48;
+        Output.Content[RunResult] = (Buffer % 10) + 48;
         Carry = Buffer / 10;
         /*Index control*/
-        Run_Summand--;
-        Run_Addend--;
-        ResultSize--;
+        Run_Minute--;
+        Run_Minus--;        
+        RunResult--;
     }
-    return Result;
-}
-
-char *BigNum_Subtraction(BigNum Minute, BigNum Minus){
-    /*Deside result size*/
-    int ResultSize, Carry;
-    if(Minute.Length > Minus.Length){
-        ResultSize = Minute.Length;
+    if(Mode == 2){        
+        for(int Run = 0; Run < abs(Minute.Length - Minus.Length); Run++){
+            if(Minute.Length > Minus.Length){
+                Output.Content[Run] = Minute.Content[Run];
+            }
+            else{
+                Output.Content[Run] = Minus.Content[Run];
+            }
+        }
+        ZeroFix(Output.Content, &ResultSize);
     }
-    else{
-        ResultSize = Minus.Length;
-    }
-
-    /*Initialization*/
-    char *Result = malloc(sizeof(char) * (ResultSize + 1));
-    Result[ResultSize] = '\0';
-    ResultSize -= 1;
-
-    /*Calculation*/
+    return Output;
 }

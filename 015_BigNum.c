@@ -14,22 +14,30 @@ int main(void){
     SecondNum.Content = InputStr(&SecondNum.Length);
     
     /*Pretreatment*/
-    char b_Flag = BigNum_Pretreatment(&FirstNum, &SecondNum);
-    printf("%s, %s, %c\n", FirstNum.Content, SecondNum.Content, b_Flag);
-    char *Ans;
+    char b_Flag;
+    BigNum Ans;
     switch(int_Mode){
         case 1:
-            *Ans = BigNum_Addition(FirstNum, SecondNum);
+            b_Flag = BigNum_Pretreatment(&FirstNum, &SecondNum, &int_Mode);
+            Ans = BigNum_Subtraction(FirstNum, SecondNum, int_Mode);
             break;
         case 2:
-            *Ans = BigNum_Subtraction(FirstNum, SecondNum);
+            b_Flag = BigNum_Pretreatment(&FirstNum, &SecondNum, &int_Mode);
+            Ans = BigNum_Subtraction(FirstNum, SecondNum, int_Mode);
+            if(b_Flag == '-'){
+                Complement(Ans.Content, &Ans.Length);
+                ZeroFix(Ans.Content, &Ans.Length);
+            }
+            break;
+        case 3:
             break;
     }
-    printf("%c%s", b_Flag, Ans);
+    printf("%s, %s, %c\n", FirstNum.Content, SecondNum.Content, b_Flag);
+    printf("%c%s", b_Flag, Ans.Content);
 
     /*Release memory*/
     free(FirstNum.Content);
     free(SecondNum.Content);
-    free(Ans);
+    free(Ans.Content);
     return 0;
 }
