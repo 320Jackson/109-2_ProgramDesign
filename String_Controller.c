@@ -4,12 +4,12 @@
 #define LIST_SIZE 128
 #define BUFFER_SIZE 256
 
-char **SplitStr(char *str_OriginStr, int **SubString_Length, int *ListLength){
+char **SplitStr(char *str_OriginStr, int *SubString_Length, int *ListLength){
     /*Array size control*/
     int int_SubStrSize = BUFFER_SIZE, int_ListSize = LIST_SIZE;
     /*Read words*/
     char **SubString_List = malloc(sizeof(char *) * int_ListSize);
-    int **SubString_Length = malloc(sizeof(int *) * int_ListSize);
+    SubString_Length = malloc(sizeof(int) * int_ListSize);
     char *SubString = malloc(sizeof(char) * int_SubStrSize);
     char *ch_Code = str_OriginStr;
     /*Index*/
@@ -27,11 +27,12 @@ char **SplitStr(char *str_OriginStr, int **SubString_Length, int *ListLength){
             int_SubStrSize = BUFFER_SIZE;
             /*Add to substring list*/
             SubString_List[int_ListIndex++] = SubString;
+            SubString = malloc(sizeof(char) * int_SubStrSize);
             /*Resize substring list*/
             if(int_ListIndex >= int_ListSize){
                 int_ListSize += LIST_SIZE;
                 SubString_List = realloc(SubString_List, sizeof(char *) * int_ListSize);
-                SubString_Length = relloc(SubString_Length, sizeof(int *) * int_ListSize);
+                SubString_Length = realloc(SubString_Length, sizeof(int) * int_ListSize);
             }
         }
         
@@ -43,8 +44,12 @@ char **SplitStr(char *str_OriginStr, int **SubString_Length, int *ListLength){
         ch_Code++;
     }
     while(*ch_Code != '\0');
+    SubString[int_SubStrIndex] = '\0';
+    SubString_Length[int_ListIndex] = int_SubStrIndex;
+    SubString_List[int_ListIndex++] = SubString;
+
     *ListLength = int_ListIndex;
-    SubString_List = relloc(SubString_List, sizeof(char *) * int_ListIndex);    
-    SubString_Length = relloc(SubString_Length, sizeof(int *) * int_ListIndex);
+    SubString_List = realloc(SubString_List, sizeof(char *) * int_ListIndex);    
+    SubString_Length = realloc(SubString_Length, sizeof(int) * int_ListIndex);
     return SubString_List;
 }
