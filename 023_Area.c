@@ -2,12 +2,13 @@
 #include <stdlib.h>
 #include <math.h>
 
-double f1(int a, double x) {
-    return sqrt((double)a - pow(x, 2.0));
+double f1(double a, double x) {
+    double output = sqrt(a - pow(x, 2.0));
+    return output;
 }
 
-double f2(int a, double x) {
-    return ((double)a * pow(x, 3.0) + (7.0 * x)) / sqrt(a + x);
+double f2(double a, double x) {
+    return (a * pow(x, 3.0) + (7.0 * x)) / sqrt(a + x);
 }
 
 int main() {
@@ -15,11 +16,11 @@ int main() {
     int mode;
     scanf("%d", &mode);
     do {
-        int a, p, q, err;
-        scanf("%d", &a);
-        scanf("%d", &p);
-        scanf("%d", &q);
-        scanf("%d", &err);
+        double a, p, q, err;
+        scanf("%lf", &a);
+        scanf("%lf", &p);
+        scanf("%lf", &q);
+        scanf("%lf", &err);
         scanf("%d", &next);
 
         int n = 1;
@@ -27,7 +28,7 @@ int main() {
         do {
             PreArea = NowArea;
             NowArea = 0;
-            double x = (double)(q - p) / (double)n;
+            double x = (q - p) / (double)n;
             for (double i = p; i <= q; i += x) {
                 if (mode == 1) {
                     if (i == p || i == q) {
@@ -46,10 +47,10 @@ int main() {
                     }
                 }
             }
-            NowArea *= (double)(q - p) / (2.0 * (double)n);
+            NowArea *= (q - p) / (2.0 * (double)n);
             n *= 2;
         }
-        while ((fabs(NowArea - PreArea) >= pow(10.0, (double)(-err)) || (NowArea == 0)));
+        while ((fabs(NowArea - PreArea) >= pow(10.0, (-err)) || (NowArea == 0)));
         printf("%.12lf\n", fabs(NowArea));
     }
     while (next != 0);
