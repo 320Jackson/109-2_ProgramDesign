@@ -12,7 +12,6 @@ double f2(double a, double x) {
 }
 
 int main() {
-    int next;
     int mode;
     scanf("%d", &mode);
     do {
@@ -21,7 +20,6 @@ int main() {
         scanf("%lf", &p);
         scanf("%lf", &q);
         scanf("%lf", &err);
-        scanf("%d", &next);
 
         int n = 1;
         double PreArea = 0, NowArea = 0;
@@ -52,7 +50,8 @@ int main() {
         }
         while ((fabs(NowArea - PreArea) >= pow(10.0, (-err)) || (NowArea == 0)));
         printf("%.12lf\n", fabs(NowArea));
+        scanf("%d", &mode);
     }
-    while (next != 0);
+    while (mode != 0);
     return 0;
 }
